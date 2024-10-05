@@ -26,6 +26,7 @@ const emailInput = document.querySelector('input[name="email"]');
 const passwordInput = document.querySelector('input[name="password"]');
 const passwordCheckInput = document.querySelector('input[name="passwordCheck"]');
 const termsInput = document.querySelector('input[name = "terms"]');
+const termsInput = document.querySelector('input[name = "terms"]');
 
 function hideError() {
     errMsg.style.display = 'none';
@@ -37,17 +38,26 @@ usernameInput.addEventListener('input', () => {
     const username = usernameInput.value;
     if (username.length < 4) {
         showError('Username must be at least 4 characters long.', usernameInput);
-        return;
-    }
-    const uniqueChars = new Set(username);
-    if (uniqueChars.size < 2) {
+        //return;
+    } else if (new Set(username).size < 2) {
+        //const uniqueChars = new Set(username);
         showError('Username must contain at least two unique characters.', usernameInput);
-        return;
-    }
-    if (/[^A-Za-z0-9]/.test(username)) {
+        //return;
+    } else if (/[^A-Za-z0-9]/.test(username)) {
         showError('Username cannot contain special characters or whitespace.', usernameInput);
-        return;
+        //return;
+    } else {
+        username = username.toLowerCase();
     }
+    //const uniqueChars = new Set(username);
+    //if (uniqueChars.size < 2) {
+    //    showError('Username must contain at least two unique characters.', usernameInput);
+    //    return;
+    //}
+    //if (/[^A-Za-z0-9]/.test(username)) {
+    //    showError('Username cannot contain special characters or whitespace.', usernameInput);
+    //    return;
+    //}
 });
 
 // Email validation
@@ -57,6 +67,13 @@ emailInput.addEventListener('input', () => {
         showError('Domains like example.com are not allowed.', emailInput);
     }
 });
+
+//Terms Validity
+termsInput.addEventListener('change', () => {
+    if (!termsInput.checked) {
+        showError('Terms and conditions are not accepted.', termsInput);
+    }
+})
 
 //Terms Validity
 termsInput.addEventListener('change', () => {
@@ -88,6 +105,49 @@ document.getElementById('registration').addEventListener('submit', (e) => {
     if (!valid) {
         e.preventDefault(); //prevent form submission if not valid
     }
+
+    //if (!document.getElementById('terms').checked) {
+    //    showError('You must accept the terms of use.', document.getElementById('terms'));
+    //    valid = false;
+    //}
+});
+
+//Terms Validity
+document.getElementById('registration').addEventListener('submit', (e) => {
+    hideError();
+    let valid = true;
+    if (termsInput.checked === false) {
+        showError('You must accept the terms and conditions.', termsInput);
+        valid = false;
+    }
+    if (!valid) {
+        e.preventDefault(); //prevent form submission if not valid
+    }
+})
+
+//Local Storage
+//document.getElementById('registration').addEventListener('submit', (e) => {
+//    hideError();
+//    let valid = true;
+//    e.preventDefault();
+
+//    if (valid) {
+//        const lowerCaseUN = usernameInput.value.toLowerCase();
+//        const lowerCaseEmail = emailInput.value.toLowerCase();
+//        const password = passwordInput.value;
+
+//        let users = JSON.parse(localStorage.getItem('users') || {})
+//        users[lowerCaseUN] = { lowerCaseEmail, password };
+
+//        localStorage.setItem('users', JSON.stringify(users));
+//        console.log('User registration successfull:', users);
+//        alert('Registration successfull');
+//    }
+
+
+
+
+//})
 
     //if (!document.getElementById('terms').checked) {
     //    showError('You must accept the terms of use.', document.getElementById('terms'));
