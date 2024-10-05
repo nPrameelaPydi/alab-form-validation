@@ -123,10 +123,12 @@ a:hover {
 }
 
 #errorDisplay {
+    display: none;
+    /*starting hidden*/
     position: absolute;
     background: #fcc;
     color: red;
-    display: flex;
+    /*display: flex;*/
     width: 500px;
     left: 50%;
     top: calc(50% + 180px);
@@ -134,5 +136,5 @@ a:hover {
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.25);
     user-select: none;
     padding: 20px;
-    display: none;
+    /*display: none;*/
 }
