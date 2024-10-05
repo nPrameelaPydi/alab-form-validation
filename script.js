@@ -5,7 +5,7 @@ console.log(`*****Part 1: Introduction****`);
 
 const errMsg = document.getElementById('errorDisplay');
 
-function showError(message) {
+function showError(message, input) {
     errMsg.textContent = message;
     errMsg.style.display = 'flex';
     input.focus(); // Focus on the input that caused the error
@@ -30,43 +30,96 @@ function hideError() {
     errMsg.style.display = 'none';
 }
 
+// Username validation
 usernameInput.addEventListener('input', () => {
-    usernameInput.setCustomValidity(''); // Clear any previous custom validity messages
+    hideError();
     const username = usernameInput.value;
-
     if (username.length < 4) {
-        usernameInput.setCustomValidity('Username must be at least 4 characters long.');
-        usernameInput.reportValidity(); //This will show the custom message immediately
-        usernameInput.focus();
+        showError('Username must be at least 4 characters long.', usernameInput);
         return;
     }
-    //using the Set object in JavaScript to check for unique characters
     const uniqueChars = new Set(username);
     if (uniqueChars.size < 2) {
-        usernameInput.setCustomValidity('Username must contain at least two unique characters.');
-        usernameInput.reportValidity();
-        usernameInput.focus();
+        showError('Username must contain at least two unique characters.', usernameInput);
         return;
     }
-    //.test() method in JavaScript is a built-in function of the RegExp (regular expression) object. It is used to check if a given string matches a specific regular expression pattern.
     if (/[^A-Za-z0-9]/.test(username)) {
-        usernameInput.setCustomValidity('Username cannot contain special characters or whitespace.');
-        usernameInput.reportValidity();
-        usernameInput.focus();
+        showError('Username cannot contain special characters or whitespace.', usernameInput);
         return;
     }
 });
 
-//Email validation
+// Email validation
 emailInput.addEventListener('input', () => {
-    emailInput.setCustomValidity('');
+    hideError();
     if (emailInput.validity.valid && emailInput.value.endsWith('@example.com')) {
-        emailInput.setCustomValidity(`Domains like example.com are not allowed.`);
-        emailInput.reportValidity();
-        emailInput.focus();
+        showError('Domains like example.com are not allowed.', emailInput);
     }
 });
 
+// Password validation
+document.getElementById('registration').addEventListener('submit', (e) => {
+    hideError();
+    let valid = true;
+    if (passwordInput.value.length < 12) {
+        showError('Passwords must be at least 12 characters long.', passwordInput);
+        valid = false;
+    }
+    if (passwordInput.value.toLowerCase().includes('password')) {
+        showError('Passwords cannot contain the word "password".', passwordInput);
+        valid = false;
+    }
+    if (passwordInput.value.includes(usernameInput.value)) {
+        showError('Passwords cannot contain the username.', passwordInput);
+        valid = false;
+    }
+    if (passwordInput.value !== passwordCheckInput.value) {
+        showError('Passwords must match.', passwordCheckInput);
+        valid = false;
+    }
+    if (!valid) {
+        e.preventDefault(); //prevent form submission if not valid
+    }
+});
+
+
+
+//code using setCustomValidity error message
+//usernameInput.addEventListener('input', () => {
+//    usernameInput.setCustomValidity(''); // Clear any previous custom validity messages
+//    const username = usernameInput.value;
+
+//    if (username.length < 4) {
+//        usernameInput.setCustomValidity('Username must be at least 4 characters long.');
+//        usernameInput.reportValidity(); //This will show the custom message immediately
+//        usernameInput.focus();
+//        return;
+//    }
+//    //using the Set object in JavaScript to check for unique characters
+//    const uniqueChars = new Set(username);
+//    if (uniqueChars.size < 2) {
+//        usernameInput.setCustomValidity('Username must contain at least two unique characters.');
+//        usernameInput.reportValidity();
+//        usernameInput.focus();
+//        return;
+//    }
+//    //.test() method in JavaScript is a built-in function of the RegExp (regular expression) object. It is used to check if a given string matches a specific regular expression pattern.
+//    if (/[^A-Za-z0-9]/.test(username)) {
+//        usernameInput.setCustomValidity('Username cannot contain special characters or whitespace.');
+//        usernameInput.reportValidity();
+//        usernameInput.focus();
+//        return;
+//    }
+//});
+////Email validation
+//emailInput.addEventListener('input', () => {
+//    emailInput.setCustomValidity('');
+//    if (emailInput.validity.valid && emailInput.value.endsWith('@example.com')) {
+//        emailInput.setCustomValidity(`Domains like example.com are not allowed.`);
+//        emailInput.reportValidity();
+//        emailInput.focus();
+//    }
+//});
 
 
 //showError(`Email addresses from example.com are not allowed.`);
@@ -109,7 +162,6 @@ emailInput.addEventListener('input', () => {
 //        //}
 //    })
 //});
-
 
 
 ////passwordInput.addEventListener('input', () => {
