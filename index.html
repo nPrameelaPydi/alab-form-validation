@@ -20,10 +20,12 @@
 
                 <!-- Registration Form -->
                 <form id="registration">
-                    <input name="username" type="text" placeholder="Username" />
+                    <input name="username" type="text" placeholder="Username" minlength="4"
+                        pattern="^(?=(?:.*(.))(?!\1))(?!.*[^A-Za-z0-9])[A-Za-z0-9]{4,}$" required />
+
                     <span class="input-icon"><i class="fa-solid fa-user"></i></span><br />
 
-                    <input name="email" type="text" placeholder="Email" />
+                    <input name="email" type="email" placeholder="Email" />
                     <span class="input-icon"><i class="fa-solid fa-envelope"></i></span><br />
 
                     <input name="password" type="text" placeholder="Password" />
