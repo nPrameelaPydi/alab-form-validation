@@ -37,17 +37,26 @@ usernameInput.addEventListener('input', () => {
     const username = usernameInput.value;
     if (username.length < 4) {
         showError('Username must be at least 4 characters long.', usernameInput);
-        return;
-    }
-    const uniqueChars = new Set(username);
-    if (uniqueChars.size < 2) {
+        //return;
+    } else if (new Set(username).size < 2) {
+        //const uniqueChars = new Set(username);
         showError('Username must contain at least two unique characters.', usernameInput);
-        return;
-    }
-    if (/[^A-Za-z0-9]/.test(username)) {
+        //return;
+    } else if (/[^A-Za-z0-9]/.test(username)) {
         showError('Username cannot contain special characters or whitespace.', usernameInput);
-        return;
+        //return;
+    } else {
+        username = username.toLowerCase();
     }
+    //const uniqueChars = new Set(username);
+    //if (uniqueChars.size < 2) {
+    //    showError('Username must contain at least two unique characters.', usernameInput);
+    //    return;
+    //}
+    //if (/[^A-Za-z0-9]/.test(username)) {
+    //    showError('Username cannot contain special characters or whitespace.', usernameInput);
+    //    return;
+    //}
 });
 
 // Email validation
@@ -107,6 +116,30 @@ document.getElementById('registration').addEventListener('submit', (e) => {
         e.preventDefault(); //prevent form submission if not valid
     }
 })
+
+//Local Storage
+//document.getElementById('registration').addEventListener('submit', (e) => {
+//    hideError();
+//    let valid = true;
+//    e.preventDefault();
+
+//    if (valid) {
+//        const lowerCaseUN = usernameInput.value.toLowerCase();
+//        const lowerCaseEmail = emailInput.value.toLowerCase();
+//        const password = passwordInput.value;
+
+//        let users = JSON.parse(localStorage.getItem('users') || {})
+//        users[lowerCaseUN] = { lowerCaseEmail, password };
+
+//        localStorage.setItem('users', JSON.stringify(users));
+//        console.log('User registration successfull:', users);
+//        alert('Registration successfull');
+//    }
+
+
+
+
+//})
 
 
 
