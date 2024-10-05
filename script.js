@@ -25,6 +25,7 @@ const usernameInput = document.querySelector('input[name="username"]');
 const emailInput = document.querySelector('input[name="email"]');
 const passwordInput = document.querySelector('input[name="password"]');
 const passwordCheckInput = document.querySelector('input[name="passwordCheck"]');
+const termsInput = document.querySelector('input[name = "terms"]');
 
 function hideError() {
     errMsg.style.display = 'none';
@@ -57,6 +58,13 @@ emailInput.addEventListener('input', () => {
     }
 });
 
+//Terms Validity
+termsInput.addEventListener('change', () => {
+    if (!termsInput.checked) {
+        showError('Terms and conditions are not accepted.', termsInput);
+    }
+})
+
 // Password validation
 document.getElementById('registration').addEventListener('submit', (e) => {
     hideError();
@@ -80,7 +88,25 @@ document.getElementById('registration').addEventListener('submit', (e) => {
     if (!valid) {
         e.preventDefault(); //prevent form submission if not valid
     }
+
+    //if (!document.getElementById('terms').checked) {
+    //    showError('You must accept the terms of use.', document.getElementById('terms'));
+    //    valid = false;
+    //}
 });
+
+//Terms Validity
+document.getElementById('registration').addEventListener('submit', (e) => {
+    hideError();
+    let valid = true;
+    if (termsInput.checked === false) {
+        showError('You must accept the terms and conditions.', termsInput);
+        valid = false;
+    }
+    if (!valid) {
+        e.preventDefault(); //prevent form submission if not valid
+    }
+})
 
 
 
