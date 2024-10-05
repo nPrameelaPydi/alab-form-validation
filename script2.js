@@ -68,21 +68,41 @@ function validatePassword() {
         showError('Passwords must match.', passwordCheckInput);
         return false;
     } else {
-        password = currentPassword.toLowerCase(); // Assign valid password to the variable
+        password = currentPassword.toLowerCase();
         return true; // Return true for valid
     }
 }
-
-//password input
 passwordInput.addEventListener('input', () => {
     validatePassword();
 });
-//password check input
 passwordCheckInput.addEventListener('input', () => {
     validatePassword();
 });
 
 
-//Terms Validity
+//Terms input check validation
+termsInput.addEventListener('change', () => {
+    hideError(); //hide error msg when chkbox is checked
+});
+
+// Form Submission
+document.getElementById('registration').addEventListener('submit', (e) => {
+    hideError();
+    let isValid = true;
+
+
+    if (!termsInput.checked) {
+        showError('You must accept the terms and conditions.', termsInput);
+        isValid = false;
+    }
+
+
+    if (!isValid) {
+        e.preventDefault(); //prevent form submission if any validation errors
+    } else {
+        storeUserData();
+    }
+});
+
 
 
