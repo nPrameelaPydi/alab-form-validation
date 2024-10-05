@@ -68,6 +68,7 @@ function validatePassword() {
         showError('Passwords must match.', passwordCheckInput);
         return false;
     } else {
+<<<<<<< HEAD
         password = currentPassword.toLowerCase();
         return true; // Return true for valid
     }
@@ -75,11 +76,24 @@ function validatePassword() {
 passwordInput.addEventListener('input', () => {
     validatePassword();
 });
+=======
+        password = currentPassword.toLowerCase(); // Assign valid password to the variable
+        return true; // Return true for valid
+    }
+}
+
+//password input
+passwordInput.addEventListener('input', () => {
+    validatePassword();
+});
+//password check input
+>>>>>>> d7be3c37866345c196ea350f670ccf71401def15
 passwordCheckInput.addEventListener('input', () => {
     validatePassword();
 });
 
 
+<<<<<<< HEAD
 //Terms input check validation
 termsInput.addEventListener('change', () => {
     hideError(); //hide error msg when chkbox is checked
@@ -104,5 +118,8 @@ document.getElementById('registration').addEventListener('submit', (e) => {
     }
 });
 
+=======
+//Terms Validity
+>>>>>>> d7be3c37866345c196ea350f670ccf71401def15
 
 
