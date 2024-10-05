@@ -44,19 +44,32 @@ usernameInput.addEventListener('input', () => {
     const uniqueChars = new Set(username);
     if (uniqueChars.size < 2) {
         usernameInput.setCustomValidity('Username must contain at least two unique characters.');
-        //usernameInput.reportValidity();
+        usernameInput.reportValidity();
         usernameInput.focus();
         return;
     }
     //.test() method in JavaScript is a built-in function of the RegExp (regular expression) object. It is used to check if a given string matches a specific regular expression pattern.
     if (/[^A-Za-z0-9]/.test(username)) {
         usernameInput.setCustomValidity('Username cannot contain special characters or whitespace.');
-        //usernameInput.reportValidity();
+        usernameInput.reportValidity();
         usernameInput.focus();
         return;
     }
 });
 
+//Email validation
+emailInput.addEventListener('input', () => {
+    emailInput.setCustomValidity('');
+    if (emailInput.validity.valid && emailInput.value.endsWith('@example.com')) {
+        emailInput.setCustomValidity(`Domains like example.com are not allowed.`);
+        emailInput.reportValidity();
+        emailInput.focus();
+    }
+});
+
+
+
+//showError(`Email addresses from example.com are not allowed.`);
 //usernameInput.addEventListener('input', () => {
 //    hideError();
 //    const username = usernameInput.value;
