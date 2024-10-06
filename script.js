@@ -22,6 +22,17 @@ function hideError() {
     errMsg.style.display = 'none';
 }
 
+function isUnique(username) {
+    let users = JSON.parse(localStorage.getItem('users'));
+    for (let user of users) {
+        if (user.username == username) {
+            return false;
+        }
+    }
+    return true;
+
+}
+
 // Username validation
 usernameInput.addEventListener('input', () => {
     hideError();
@@ -35,6 +46,9 @@ usernameInput.addEventListener('input', () => {
         return;
     } else if (/[^A-Za-z0-9]/.test(usernameInput.value)) {
         showError('Username cannot contain special characters or whitespace.', usernameInput);
+        return;
+    } else if (!isUnique(usernameInput.value.toLowerCase())) {
+        showError('Username is NOT unique.', usernameInput);
         return;
     } else {
         username = usernameInput.value.toLowerCase();
