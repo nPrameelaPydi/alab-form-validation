@@ -5,7 +5,6 @@ function showError(message, input) {
     errMsg.style.display = 'flex';
     input.focus(); // Focus on the input that caused the error
 }
-
 const usernameInput = document.querySelector('input[name="username"]');
 const emailInput = document.querySelector('input[name="email"]');
 const passwordInput = document.querySelector('input[name="password"]');
@@ -30,7 +29,6 @@ function isUnique(username) {
         }
     }
     return true;
-
 }
 
 // Username validation
@@ -41,10 +39,12 @@ usernameInput.addEventListener('input', () => {
         showError('Username must be at least 4 characters long.', usernameInput);
         return;
     } else if (new Set(usernameInput.value).size < 2) {
+        ////using the Set object in JavaScript to check for unique characters
         //const uniqueChars = new Set(username);
         showError('Username must contain at least two unique characters.', usernameInput);
         return;
     } else if (/[^A-Za-z0-9]/.test(usernameInput.value)) {
+        ////.test() method in JavaScript is a built-in function of the RegExp (regular expression) object. It is used to check if a given string matches a specific regular expression pattern.
         showError('Username cannot contain special characters or whitespace.', usernameInput);
         return;
     } else if (!isUnique(usernameInput.value.toLowerCase())) {
@@ -94,12 +94,10 @@ passwordCheckInput.addEventListener('input', () => {
     validatePassword();
 });
 
-
 //TermsInput checkbox validation
 termsInput.addEventListener('change', () => {
     hideError(); // hide any existing err msg when checkbox checked
 });
-
 
 // Store user data in localStorage
 function storeUserData() {
@@ -112,10 +110,8 @@ function storeUserData() {
         email,
         password
     };
-
     // Add the new user to the users array
     users.push(newUser);
-
     // Store the updated users array back in localStorage
     localStorage.setItem('users', JSON.stringify(users));
 }
@@ -131,6 +127,19 @@ function showSuccess(message) {
 document.getElementById('registration').addEventListener('submit', (e) => {
     hideError(); // Hide existing error messages
     let isValid = true;
+    if (!username) {
+        showError(`username not valid`, usernameInput);
+        isValid = false;
+    }
+    if (!email) {
+        showError('email not valid', emailInput);
+        isValid = false;
+    }
+
+    if (!validatePassword()) {
+        isValid = false;
+    }
+
     if (!termsInput.checked) {
         showError('You must accept the terms and conditions.', termsInput);
         isValid = false;
@@ -138,6 +147,7 @@ document.getElementById('registration').addEventListener('submit', (e) => {
     if (!isValid) {
         e.preventDefault(); //prevent form submission if any validation errors
     } else {
+        //e.preventDefault();
         storeUserData(); // Call function to store user data in localStorage
 
         // Show success message
@@ -149,6 +159,10 @@ document.getElementById('registration').addEventListener('submit', (e) => {
         passwordInput.value = '';
         passwordCheckInput.value = '';
         termsInput.checked = false;
+
+        username = '';
+        email = '';
+
     }
 });
 
