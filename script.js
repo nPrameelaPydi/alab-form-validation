@@ -11,6 +11,7 @@ const emailInput = document.querySelector('input[name="email"]');
 const passwordInput = document.querySelector('input[name="password"]');
 const passwordCheckInput = document.querySelector('input[name="passwordCheck"]');
 const termsInput = document.querySelector('input[name = "terms"]');
+const submitBtn = document.querySelector('input [type="submit"]')
 
 let username;
 let email;
@@ -80,24 +81,42 @@ passwordCheckInput.addEventListener('input', () => {
 });
 
 
-
 //TermsInput checkbox validation
 termsInput.addEventListener('change', () => {
     hideError(); // hide any existing err msg when checkbox checked
 });
+
+
+// Store user data in localStorage
+function storeUserData() {
+    // Get existing users from localStorage
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    console.log(localStorage.getItem('users'));
+    // Create a user object
+    const newUser = {
+        username,
+        email,
+        password
+    };
+
+    // Add the new user to the users array
+    users.push(newUser);
+
+    // Store the updated users array back in localStorage
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+function showSuccess(message) {
+    errMsg.textContent = message;
+    errMsg.style.display = 'flex';
+    errMsg.style.backgroundColor = 'green'; // Set background for success
+    errMsg.style.color = 'white'; // Optional: change text color for contrast
+}
+
 // Form Submission
 document.getElementById('registration').addEventListener('submit', (e) => {
     hideError(); // Hide existing error messages
     let isValid = true;
-
-
-
-
-
-
-
-
-
     if (!termsInput.checked) {
         showError('You must accept the terms and conditions.', termsInput);
         isValid = false;
@@ -105,7 +124,19 @@ document.getElementById('registration').addEventListener('submit', (e) => {
     if (!isValid) {
         e.preventDefault(); //prevent form submission if any validation errors
     } else {
-        storeUserData();
+        storeUserData(); // Call function to store user data in localStorage
+
+        // Show success message
+        showSuccess('Registration successful!', submitBtn);
+
+        // Clear all form fields
+        usernameInput.value = '';
+        emailInput.value = '';
+        passwordInput.value = '';
+        passwordCheckInput.value = '';
+        termsInput.checked = false;
     }
 });
+
+
 
