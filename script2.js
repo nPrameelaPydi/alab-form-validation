@@ -13,6 +13,37 @@ document.getElementById('registration').addEventListener('submit', (e) => {
     errMsg.style.display = 'none';
     errMsg.textContent = '';
 
+    const usernameValue = usernameInput.value;
+    if (!userNameValidation(usernameValue)) {
+        usernameInput.focus();
+        return;
+    }
+    const emailValue = emailInput.value;
+    if (!emailValidation(emailValue)) {
+        emailInput.focus();
+        return;
+    }
+    const passwordValue = passwordInput.value;
+    if (!passwordValidation(passwordValue)) {
+        passwordInput.focus();
+    }
+    const passwordCheckValue = passwordCheckInput.value;
+    if (passwordValue !== passwordCheckValue) {
+        showError('Passwords must match');
+        passwordCheckInput.focus();
+        return;
+    }
+    if (!termsInput.checked) {
+        showError('You must accept the terms and conditions.');
+        return;
+    }
+    //if all validations pass, store user data in local storage
+    storeUserData(usernameValue, emailValue, passwordValue);
+
+    //clear the form and display registration success message
+    e.target.reset();
+    showSuccess('Registration Successful!!');
+
 });
 
 function showError(message) {
@@ -76,18 +107,16 @@ function passwordValidation(password) {
     } else if (password.toLowerCase().includes('password')) {
         showError('Passwords cannot contain the word "password".');
         return false;
-    } else if (password.toLowerCase().includes(username.toLowerCase())) {
+    } else if (password.toLowerCase().includes(usernameInput.value.toLowerCase())) {
         showError('Passwords cannot contain the username.');
         return false;
-    } else if (password !== passwordCheckInput.value) {
-        showError('Passwords must match.');
-        return false;
-    } else {
-        password = password.toLowerCase();
-        return true; // Return true for valid
-    }
+    } //else if (password !== passwordCheckInput.value) {
+    //    showError('Passwords must match.');
+    //    return false;
+    //}
+    return true;
 }
-function storeUserData() {
+function storeUserData(username, email, password) {
     // Get existing users from localStorage
     const users = JSON.parse(localStorage.getItem('users')) || {};
     //console.log(localStorage.getItem('users'));
@@ -102,6 +131,7 @@ function storeUserData() {
     //users.push(newUser);
     // Store the updated users array back in localStorage
     localStorage.setItem('users', JSON.stringify(users));
+    console.log(users);
 }
 
 
