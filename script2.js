@@ -24,8 +24,11 @@ document.getElementById('registration').addEventListener('submit', (e) => {
         return;
     }
     const passwordValue = passwordInput.value;
-    if (!passwordValidation(passwordValue)) {
+    //if (!passwordValidation(passwordValue)) {
+    //    passwordInput.focus();}
+    if (!passwordValidation(passwordValue, usernameValue)) {
         passwordInput.focus();
+        return;
     }
     const passwordCheckValue = passwordCheckInput.value;
     if (passwordValue !== passwordCheckValue) {
@@ -34,6 +37,7 @@ document.getElementById('registration').addEventListener('submit', (e) => {
         return;
     }
     if (!termsInput.checked) {
+        //errMsg.innerHTML = '';
         showError('You must accept the terms and conditions.');
         return;
     }
@@ -43,12 +47,13 @@ document.getElementById('registration').addEventListener('submit', (e) => {
     //clear the form and display registration success message
     e.target.reset();
     showSuccess('Registration Successful!!');
-
+    console.log("Form submitted");
 });
 
 function showError(message) {
     errMsg.textContent = message;
     errMsg.style.display = 'block';
+    errMsg.style.backgroundColor = '#fcc';
 }
 function showSuccess(message) {
     errMsg.textContent = message;
@@ -96,24 +101,24 @@ function emailValidation(email) {
     }
     return true;
 }
-function passwordValidation(password) {
-    const passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])$";
-    if (!passwordPattern.test(password)) {
-        showError('Password must match pattern of atleast one uppercase letter, one special character, one number');
-        return false;
-    } else if (password.length < 12) {
+function passwordValidation(password, username) {
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/;
+    //debugging outputs
+    console.log("Checking password:", password);
+    console.log("Lowercased password:", password.toLowerCase());
+    if (password.length < 12) {
         showError('Passwords must be at least 12 characters long.');
         return false;
-    } else if (password.toLowerCase().includes('password')) {
+    } else if (!passwordPattern.test(password)) {
+        showError('Password must contain at least one uppercase letter, one special character, and one number.');
+        return false;
+    } else if (password.trim().toLowerCase().includes('password')) {
         showError('Passwords cannot contain the word "password".');
         return false;
-    } else if (password.toLowerCase().includes(usernameInput.value.toLowerCase())) {
+    } else if (password.trim().toLowerCase().includes(username.toLowerCase())) {
         showError('Passwords cannot contain the username.');
         return false;
-    } //else if (password !== passwordCheckInput.value) {
-    //    showError('Passwords must match.');
-    //    return false;
-    //}
+    }
     return true;
 }
 function storeUserData(username, email, password) {
